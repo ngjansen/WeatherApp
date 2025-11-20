@@ -194,59 +194,60 @@ export default function App() {
   return (
     <div className={`min-h-screen w-full relative overflow-hidden transition-colors duration-1000 ${theme.bg}`}>
       
-      {/* Dynamic Background Blobs */}
-      <div className="fixed inset-0 w-full h-full overflow-hidden pointer-events-none">
+      {/* Dynamic Background Blobs - Optimized for performance */}
+      <div className="fixed inset-0 w-full h-full overflow-hidden pointer-events-none transform-gpu">
          <div className={`absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full mix-blend-overlay filter blur-3xl opacity-60 animate-blob ${theme.blob1} transition-colors duration-1000`}></div>
          <div className={`absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full mix-blend-overlay filter blur-3xl opacity-60 animate-blob animation-delay-2000 ${theme.blob2} transition-colors duration-1000`}></div>
          <div className={`absolute bottom-[-20%] left-[20%] w-[60vw] h-[60vw] rounded-full mix-blend-overlay filter blur-3xl opacity-60 animate-blob animation-delay-4000 ${theme.blob3} transition-colors duration-1000`}></div>
       </div>
 
       {/* Content Wrapper */}
-      <div className={`relative z-10 flex flex-col items-center p-4 md:p-8 max-w-6xl mx-auto w-full min-h-screen ${textColor}`}>
+      <div className={`relative z-10 flex flex-col items-center p-3 sm:p-6 md:p-8 max-w-6xl mx-auto w-full min-h-screen ${textColor}`}>
         
-        {/* Floating Search Bar */}
-        <div className="sticky top-4 z-50 w-full max-w-lg mx-auto mb-6">
-          <div className={`${glassBg} backdrop-blur-xl rounded-full p-1.5 shadow-2xl flex items-center transition-all focus-within:scale-105 duration-300`}>
-            <div className={`pl-4 opacity-50`}>
-                <Search className="w-5 h-5" />
-            </div>
-            <form onSubmit={handleSearch} className="flex-1">
+        {/* Floating Search Bar - Sleek & Compact & Single Row */}
+        <div className="sticky top-2 md:top-4 z-50 w-full flex justify-center px-4 mb-2 md:mb-6 pointer-events-none">
+           {/* Pointer events auto on child to allow clicking through side areas if needed */}
+          <div className={`pointer-events-auto relative group w-full max-w-[240px] focus-within:max-w-md transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${glassBg} backdrop-blur-2xl rounded-full shadow-lg hover:shadow-2xl flex items-center h-10 md:h-12 pl-4 pr-1`}>
+            <Search className={`w-4 h-4 opacity-50 flex-shrink-0 ${textColor}`} />
+            <form onSubmit={handleSearch} className="flex-1 min-w-0 h-full flex items-center">
                 <input
                     type="text"
+                    inputMode="search"
                     value={locationQuery}
                     onChange={(e) => setLocationQuery(e.target.value)}
-                    placeholder="Search city..."
-                    className={`w-full bg-transparent border-none ${textColor} ${placeholderColor} focus:outline-none px-3 py-2 font-medium`}
+                    placeholder="Find your city..."
+                    className={`w-full h-full bg-transparent border-none ${textColor} ${placeholderColor} focus:outline-none focus:ring-0 px-3 text-sm font-medium placeholder:font-light tracking-wide truncate`}
                 />
             </form>
+            <div className={`w-px h-4 mx-1 opacity-20 ${isLightBg ? 'bg-black' : 'bg-white'}`}></div>
             <button 
               onClick={handleGeoLocation}
-              className={`p-2.5 rounded-full opacity-80 hover:opacity-100 transition-all ${isLightBg ? 'bg-black/10' : 'bg-white/10'}`}
+              className={`flex-shrink-0 p-2 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 opacity-70 hover:opacity-100 ${isLightBg ? 'hover:bg-black/5' : 'hover:bg-white/10'}`}
               title="Use my location"
             >
-              <MapPin className="w-5 h-5" />
+              <MapPin className={`w-4 h-4 ${textColor}`} />
             </button>
           </div>
         </div>
 
         {/* Main Layout */}
-        <div className="w-full flex flex-col gap-6">
+        <div className="w-full flex flex-col gap-4 md:gap-6">
             {loading ? (
             <div className="flex flex-col items-center justify-center h-[60vh] animate-fade-in">
                 <div className="relative">
                     <div className={`absolute inset-0 rounded-full blur-xl ${isLightBg ? 'bg-sky-400/30' : 'bg-white/20'}`}></div>
-                    <Loader2 className={`w-16 h-16 animate-spin relative z-10 ${textColor}`} />
+                    <Loader2 className={`w-12 h-12 md:w-16 md:h-16 animate-spin relative z-10 ${textColor}`} />
                 </div>
-                <p className="mt-8 text-xl font-light tracking-widest uppercase opacity-80">Accessing Global Sensors</p>
+                <p className="mt-6 md:mt-8 text-sm md:text-xl font-light tracking-widest uppercase opacity-80">Scanning Atmosphere</p>
             </div>
             ) : error ? (
             <div className="flex items-center justify-center h-[50vh]">
-                <div className={`${glassBg} p-8 rounded-2xl text-center max-w-md backdrop-blur-md`}>
-                    <p className="text-red-400 font-bold text-xl mb-2">Connection Lost</p>
-                    <p className="opacity-70 mb-6">{error}</p>
+                <div className={`${glassBg} p-6 md:p-8 rounded-2xl text-center max-w-xs md:max-w-md backdrop-blur-md`}>
+                    <p className="text-red-400 font-bold text-lg md:text-xl mb-2">Connection Lost</p>
+                    <p className="opacity-70 mb-6 text-sm md:text-base">{error}</p>
                     <button 
                         onClick={() => fetchWeather("London")} 
-                        className={`px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 mx-auto ${isLightBg ? 'bg-sky-500 text-white hover:bg-sky-600' : 'bg-white/10 hover:bg-white/20 text-white'}`}
+                        className={`px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 mx-auto text-sm md:text-base ${isLightBg ? 'bg-sky-500 text-white hover:bg-sky-600' : 'bg-white/10 hover:bg-white/20 text-white'}`}
                     >
                         <RefreshCw className="w-4 h-4" /> Try London
                     </button>
@@ -255,12 +256,12 @@ export default function App() {
             ) : weatherData ? (
             <>
                 {/* Hero */}
-                <section className="w-full mb-4">
+                <section className="w-full mb-2 md:mb-4">
                     <CurrentWeather data={weatherData} theme={theme} />
                 </section>
 
                 {/* Forecasts Split */}
-                <section className="grid grid-cols-1 lg:grid-cols-5 gap-6 w-full animate-slide-up">
+                <section className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6 w-full animate-slide-up">
                     <div className="lg:col-span-3 h-full">
                         <HourlyForecast data={weatherData.hourly} theme={theme} />
                     </div>
@@ -274,8 +275,8 @@ export default function App() {
         
         {/* Footer */}
         <footer className="mt-12 text-center pb-4">
-            <p className="opacity-30 text-xs font-bold tracking-[0.3em] uppercase">
-              Powered by Gemini 2.5 with Real-Time Grounding
+            <p className="opacity-30 text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase">
+              Powered by Gemini 2.5
             </p>
         </footer>
 

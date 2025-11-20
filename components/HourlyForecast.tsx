@@ -32,18 +32,18 @@ export const HourlyForecast: React.FC<HourlyForecastProps> = ({ data, theme }) =
   const chartData = data.slice(0, 24);
 
   return (
-    <div className="w-full glass-panel rounded-3xl p-6 md:p-8 shadow-2xl h-full flex flex-col">
-      <div className="flex justify-between items-end mb-6">
-        <h2 className="text-xl font-semibold text-white font-display">Hourly Forecast</h2>
-        <span className="text-xs text-white/40 uppercase tracking-widest">Next 24 Hours</span>
+    <div className="w-full glass-panel rounded-3xl p-4 md:p-8 shadow-2xl h-full flex flex-col">
+      <div className="flex justify-between items-end mb-4 md:mb-6">
+        <h2 className="text-lg md:text-xl font-semibold text-white font-display">Hourly Forecast</h2>
+        <span className="text-[10px] md:text-xs text-white/40 uppercase tracking-widest">Next 24 Hours</span>
       </div>
       
-      {/* Mobile: Horizontal Scroll List */}
-      <div className="flex md:hidden overflow-x-auto pb-4 gap-4 no-scrollbar mask-linear-fade">
+      {/* Mobile: Horizontal Scroll List with Snap */}
+      <div className="flex md:hidden overflow-x-auto pb-4 gap-3 no-scrollbar mask-linear-fade snap-x snap-mandatory touch-pan-x">
         {chartData.map((hour, i) => (
-          <div key={i} className="flex-shrink-0 flex flex-col items-center gap-3 p-3 rounded-2xl bg-white/5 min-w-[70px] border border-white/5">
+          <div key={i} className="snap-center flex-shrink-0 flex flex-col items-center gap-2 p-3 rounded-2xl bg-white/5 min-w-[72px] border border-white/5">
             <span className="text-xs text-white/60 font-medium">{hour.time}</span>
-            <WeatherIcon condition={hour.condition} className="w-8 h-8 text-white" />
+            <WeatherIcon condition={hour.condition} className="w-6 h-6 text-white" />
             <span className="text-lg font-bold">{Math.round(hour.temp)}°</span>
             <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
                 <div className={`h-full ${theme.accentBg}`} style={{width: `${hour.precipChance}%`}} />
