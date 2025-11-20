@@ -1,0 +1,7 @@
+{
+  "name": "Atmosphere AI",
+  "description": "A beautiful, AI-powered weather dashboard providing detailed current, hourly, and daily forecasts with aesthetic visualizations.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
